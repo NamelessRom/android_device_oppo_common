@@ -20,6 +20,7 @@ import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -27,6 +28,8 @@ import com.android.internal.os.DeviceKeyHandler;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.cm.NavigationRingHelpers;
 import com.android.internal.util.cm.TorchConstants;
+import com.cyanogenmod.settings.device.utils.Constants;
+import com.cyanogenmod.settings.device.utils.FileUtils;
 
 public class KeyHandler implements DeviceKeyHandler {
 
@@ -97,7 +100,7 @@ public class KeyHandler implements DeviceKeyHandler {
                 }
             case GESTURE_CIRCLE_SCANCODE:
                 ensureKeyguardManager();
-                String action = null;
+                final String action;
                 if (mKeyguardManager.isKeyguardSecure() && mKeyguardManager.isKeyguardLocked()) {
                     action = MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE;
                 } else {
@@ -233,6 +236,9 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private void doHapticFeedback() {
         if (mVibrator == null) return;
-        mVibrator.vibrate(50);
+        final String val = FileUtils.readOneLine(Constants.TOUCHSCREEN_HAPTIC_FEEDBACK_NODE);
+        if (TextUtils.equals(val, "1")) {
+            mVibrator.vibrate(50);
+        }
     }
 }

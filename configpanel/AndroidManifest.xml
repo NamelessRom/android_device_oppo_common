@@ -14,7 +14,7 @@
 
     <uses-sdk
             android:minSdkVersion="18"
-            android:targetSdkVersion="19" />
+            android:targetSdkVersion="21" />
 
     <application
         android:theme="@style/Theme.Main">
