@@ -29,7 +29,6 @@ import com.android.internal.util.ArrayUtils;
 //import com.android.internal.util.cm.NavigationRingHelpers;
 //import com.android.internal.util.cm.TorchConstants;
 
-import com.cyanogenmod.settings.device.utils.Constants;
 import com.cyanogenmod.settings.device.utils.FileUtils;
 
 public class KeyHandler implements DeviceKeyHandler {
@@ -45,6 +44,8 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_LTR_SCANCODE = 253;
     private static final int GESTURE_GTR_SCANCODE = 254;
     private static final int KEY_DOUBLE_TAP = 255;
+
+    public static final String TOUCHSCREEN_HAPTIC_FEEDBACK_PATH = "/proc/touchpanel/haptic_feedback_enable";
 
     private static final int GESTURE_WAKELOCK_DURATION = 3000;
 
@@ -245,7 +246,7 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private void doHapticFeedback() {
         if (mVibrator == null) return;
-        final String val = FileUtils.readOneLine(Constants.TOUCHSCREEN_HAPTIC_FEEDBACK_NODE);
+        final String val = FileUtils.readOneLine(TOUCHSCREEN_HAPTIC_FEEDBACK_PATH);
         if (TextUtils.equals(val, "1")) {
             mVibrator.vibrate(50);
         }
