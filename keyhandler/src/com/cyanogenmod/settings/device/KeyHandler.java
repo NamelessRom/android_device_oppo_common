@@ -2,7 +2,6 @@ package com.cyanogenmod.settings.device;
 
 import android.app.ActivityManagerNative;
 import android.app.KeyguardManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -14,7 +13,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
@@ -26,8 +24,6 @@ import android.view.KeyEvent;
 
 import com.android.internal.os.DeviceKeyHandler;
 import com.android.internal.util.ArrayUtils;
-//import com.android.internal.util.cm.NavigationRingHelpers;
-//import com.android.internal.util.cm.TorchConstants;
 
 import com.cyanogenmod.settings.device.utils.FileUtils;
 
@@ -45,6 +41,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_GTR_SCANCODE = 254;
     private static final int KEY_DOUBLE_TAP = 255;
 
+    public static final String ACTION_FLASHLIGHT = "com.android.systemui.TOGGLE_FLASHLIGHT";
     public static final String TOUCHSCREEN_HAPTIC_FEEDBACK_PATH = "/proc/touchpanel/haptic_feedback_enable";
 
     private static final int GESTURE_WAKELOCK_DURATION = 3000;
@@ -117,17 +114,14 @@ public class KeyHandler implements DeviceKeyHandler {
                 dispatchMediaKeyWithWakeLockToAudioService(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
                 doHapticFeedback();
                 break;
-                /*
             case GESTURE_V_SCANCODE:
-                if (NavigationRingHelpers.isTorchAvailable(mContext)) {
-                    mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
-                    Intent torchIntent = new Intent(TorchConstants.ACTION_TOGGLE_STATE);
-                    torchIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-                    mContext.sendBroadcast(torchIntent);
-                    doHapticFeedback();
-                }
+                mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
+                final Intent torchIntent = new Intent(ACTION_FLASHLIGHT);
+                torchIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                final UserHandle user = new UserHandle(UserHandle.USER_CURRENT);
+                mContext.sendBroadcastAsUser(torchIntent, user);
+                doHapticFeedback();
                 break;
-                */
             case GESTURE_LTR_SCANCODE:
                 dispatchMediaKeyWithWakeLockToAudioService(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
                 doHapticFeedback();
