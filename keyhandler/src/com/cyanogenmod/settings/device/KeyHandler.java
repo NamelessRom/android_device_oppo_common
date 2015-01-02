@@ -17,10 +17,10 @@ import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.Vibrator;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -29,12 +29,12 @@ import com.android.internal.util.ArrayUtils;
 //import com.android.internal.util.cm.NavigationRingHelpers;
 //import com.android.internal.util.cm.TorchConstants;
 
-import com.cyanogenmod.settings.device.utils.FileUtils;
-
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = KeyHandler.class.getSimpleName();
     private static final int GESTURE_REQUEST = 1;
+
+    private static final String PROP_HAPTIC_FEEDBACK = "persist.gestures.haptic";
 
     // Supported scancodes
     private static final int FLIP_CAMERA_SCANCODE = 249;
@@ -44,8 +44,6 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_LTR_SCANCODE = 253;
     private static final int GESTURE_GTR_SCANCODE = 254;
     private static final int KEY_DOUBLE_TAP = 255;
-
-    public static final String TOUCHSCREEN_HAPTIC_FEEDBACK_PATH = "/proc/touchpanel/haptic_feedback_enable";
 
     private static final int GESTURE_WAKELOCK_DURATION = 3000;
 
@@ -243,10 +241,7 @@ public class KeyHandler implements DeviceKeyHandler {
     }
 
     private void doHapticFeedback() {
-        if (mVibrator == null) return;
-        final String val = FileUtils.readOneLine(TOUCHSCREEN_HAPTIC_FEEDBACK_PATH);
-        if (TextUtils.equals(val, "1")) {
-            mVibrator.vibrate(50);
-        }
+        if (mVibrator == null || !SystemProperties.getBoolean(PROP_HAPTIC_FEEDBACK, false)) return;
+        mVibrator.vibrate(50);
     }
 }

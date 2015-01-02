@@ -1,14 +1,12 @@
 package com.cyanogenmod.settings.device.utils;
 
-
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
-
 
 public class NodePreferenceActivity extends PreferenceActivity implements OnPreferenceChangeListener {
 
@@ -36,7 +34,7 @@ public class NodePreferenceActivity extends PreferenceActivity implements OnPref
         super.addPreferencesFromResource(preferencesResId);
         // Initialize node preferences
         for (String pref : Constants.sNodePreferenceMap.keySet()) {
-            CheckBoxPreference b = (CheckBoxPreference) findPreference(pref);
+            SwitchPreference b = (SwitchPreference) findPreference(pref);
             if (b == null) continue;
             b.setOnPreferenceChangeListener(this);
             String node = Constants.sNodePreferenceMap.get(pref);

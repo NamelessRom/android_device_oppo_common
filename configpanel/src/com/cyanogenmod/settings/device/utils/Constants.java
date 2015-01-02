@@ -23,21 +23,18 @@ public class Constants {
     public static final String TOUCHSCREEN_CAMERA_GESTURE_KEY = "touchscreen_gesture_camera";
     public static final String TOUCHSCREEN_MUSIC_GESTURE_KEY = "touchscreen_gesture_music";
     public static final String TOUCHSCREEN_FLASHLIGHT_GESTURE_KEY = "touchscreen_gesture_flashlight";
-    public static final String TOUCHSCREEN_HAPTIC_FEEDBACK_KEY = "touchscreen_haptic_feedback";
 
     // Proc nodes
     public static final String TOUCH_PAD_NODE = "/proc/touchpad/enable";
     public static final String TOUCHSCREEN_CAMERA_NODE = "/proc/touchpanel/camera_enable";
     public static final String TOUCHSCREEN_MUSIC_NODE = "/proc/touchpanel/music_enable";
     public static final String TOUCHSCREEN_FLASHLIGHT_NODE = "/proc/touchpanel/flashlight_enable";
-    public static final String TOUCHSCREEN_HAPTIC_FEEDBACK_NODE = "/proc/touchpanel/haptic_feedback_enable";
 
     // Proc nodes default values
     public static final boolean TOUCH_PAD_DEFAULT = false;
     public static final boolean TOUCHSCREEN_CAMERA_DEFAULT = true;
     public static final boolean TOUCHSCREEN_MUSIC_DEFAULT = true;
     public static final boolean TOUCHSCREEN_FLASHLIGHT_DEFAULT = true;
-    public static final boolean TOUCHSCREEN_HAPTIC_FEEDBACK_DEFAULT = true;
 
     // Holds <preference_key> -> <proc_node> mapping
     public static final Map<String, String> sNodePreferenceMap = new HashMap<String, String>();
@@ -47,13 +44,11 @@ public class Constants {
 
     static {
         sNodePreferenceMap.put(TOUCHPAD_STATE_KEY, TOUCH_PAD_NODE);
-        sNodePreferenceMap.put(TOUCHSCREEN_HAPTIC_FEEDBACK_KEY, TOUCHSCREEN_HAPTIC_FEEDBACK_NODE);
         sNodePreferenceMap.put(TOUCHSCREEN_CAMERA_GESTURE_KEY, TOUCHSCREEN_CAMERA_NODE);
         sNodePreferenceMap.put(TOUCHSCREEN_MUSIC_GESTURE_KEY, TOUCHSCREEN_MUSIC_NODE);
         sNodePreferenceMap.put(TOUCHSCREEN_FLASHLIGHT_GESTURE_KEY, TOUCHSCREEN_FLASHLIGHT_NODE);
 
         sNodeDefaultMap.put(TOUCHPAD_STATE_KEY, TOUCH_PAD_DEFAULT);
-        sNodeDefaultMap.put(TOUCHSCREEN_HAPTIC_FEEDBACK_KEY, TOUCHSCREEN_HAPTIC_FEEDBACK_DEFAULT);
         sNodeDefaultMap.put(TOUCHSCREEN_CAMERA_GESTURE_KEY, TOUCHSCREEN_CAMERA_DEFAULT);
         sNodeDefaultMap.put(TOUCHSCREEN_MUSIC_GESTURE_KEY, TOUCHSCREEN_MUSIC_DEFAULT);
         sNodeDefaultMap.put(TOUCHSCREEN_FLASHLIGHT_GESTURE_KEY, TOUCHSCREEN_FLASHLIGHT_DEFAULT);

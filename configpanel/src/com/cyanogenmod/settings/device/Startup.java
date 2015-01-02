@@ -34,7 +34,7 @@ public class Startup extends BroadcastReceiver {
             } else {
                 // Restore nodes to saved preference values
                 for (String pref : Constants.sNodePreferenceMap.keySet()) {
-                    boolean defaultValue = Constants.sNodeDefaultMap.get(pref).booleanValue();
+                    boolean defaultValue = Constants.sNodeDefaultMap.get(pref);
                     boolean value = Constants.isPreferenceEnabled(context, pref, defaultValue);
                     String node = Constants.sNodePreferenceMap.get(pref);
                     FileUtils.writeLine(node, value ? "1" : "0");
