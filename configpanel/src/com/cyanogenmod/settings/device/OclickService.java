@@ -35,14 +35,18 @@ import com.cyanogenmod.settings.device.utils.Constants;
 public class OclickService extends Service implements OnSharedPreferenceChangeListener {
 
     private static final String TAG = OclickService.class.getSimpleName();
-    private static final UUID sTriggerServiceUUID = UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
-    private static final UUID sTriggerCharacteristicUUIDv1 = UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
+    //private static final UUID sTriggerServiceUUID = UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
+    private static final UUID sTriggerServiceUUID = UUID.fromString("00002200-0000-1000-8000-00805f9b34fb");
+
+    //private static final UUID sTriggerCharacteristicUUIDv1 = UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
+    private static final UUID sTriggerCharacteristicUUIDv1 = UUID.fromString("f000ffc0-0451-4000-b000-000000000000");
     private static final UUID sTriggerCharacteristicUUIDv2 = UUID.fromString("f000ffe1-0451-4000-b000-000000000000");
 
     private static final UUID sImmediateAlertServiceUUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb"); //0-2
     private static final UUID sImmediateAlertCharacteristicUUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");
 
-    private static final UUID sLinkLossServiceUUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb"); // 0-3
+    //private static final UUID sLinkLossServiceUUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb"); // 0-3
+    private static final UUID sLinkLossServiceUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
     private static final UUID sLinkLossCharacteristicUUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");
 
     //    private static final UUID sControllCharacteristicUUIDv1 = UUID.fromString("0000aa01-0000-1000-8000-00805f9b34fb");
