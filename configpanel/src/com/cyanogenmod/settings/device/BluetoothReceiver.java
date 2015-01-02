@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class BluetoothReceiver extends BroadcastReceiver {
     @Override
@@ -21,7 +22,8 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 return;
             }
             String deviceName = device.getName().toLowerCase();
-            if (deviceName.contains("oppo b") || deviceName.equals("o-click")) {
+            Log.d("BluetoothReceiver", "device: " +deviceName);
+            if (deviceName.contains("oppo b") || deviceName.contains("o-click")) {
                 Intent i = new Intent(context, OclickService.class);
                 i.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
                 context.startService(i);
