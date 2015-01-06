@@ -19,7 +19,7 @@ public class TouchscreenGestureSettings extends NodePreferenceActivity {
 
         final SwitchPreference hapticFeedback =
                 (SwitchPreference) findPreference(KEY_HAPTIC_FEEDBACK);
-        hapticFeedback.setChecked(SystemProperties.getBoolean(PROP_HAPTIC_FEEDBACK, false));
+        hapticFeedback.setChecked(SystemProperties.getBoolean(PROP_HAPTIC_FEEDBACK, true));
         hapticFeedback.setOnPreferenceChangeListener(this);
     }
 

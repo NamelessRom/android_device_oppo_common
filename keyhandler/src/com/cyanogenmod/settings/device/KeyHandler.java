@@ -235,7 +235,7 @@ public class KeyHandler implements DeviceKeyHandler {
     }
 
     private void doHapticFeedback() {
-        if (mVibrator == null || !SystemProperties.getBoolean(PROP_HAPTIC_FEEDBACK, false)) return;
+        if (mVibrator == null || !SystemProperties.getBoolean(PROP_HAPTIC_FEEDBACK, true)) return;
         mVibrator.vibrate(50);
     }
 }
