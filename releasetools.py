@@ -81,7 +81,7 @@ def FULLOTA_InstallEnd_MMC(info):
     print "warning radio-update: no radio image in input target_files; not flashing radio"
     return
   info.script.UnmountAll()
-  info.script.Print("Writing radio image...")
+  info.script.Print("[!] Flashing firmware")
   #Load filesmap file
   filesmap = LoadFilesMap(info.input_zip)
   if filesmap == {}:
@@ -90,6 +90,7 @@ def FULLOTA_InstallEnd_MMC(info):
   for f in files:
     image_data = info.input_zip.read(f)
     InstallRawImage(image_data, info.input_version, info.input_zip, f, info, filesmap)
+  info.script.Print("[+] Done")
   return
 
 def FullOTA_InstallEnd(info):
