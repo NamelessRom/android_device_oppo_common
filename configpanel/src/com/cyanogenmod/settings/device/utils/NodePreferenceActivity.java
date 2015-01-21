@@ -8,7 +8,8 @@ import android.preference.SwitchPreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-public class NodePreferenceActivity extends PreferenceActivity implements OnPreferenceChangeListener {
+public class NodePreferenceActivity extends PreferenceActivity
+        implements OnPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
