@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.TorchManager;
 import android.media.session.MediaSessionLegacyHelper;
 import android.os.Handler;
 import android.os.Message;
@@ -58,6 +59,7 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private final Context mContext;
     private final PowerManager mPowerManager;
+    private final TorchManager mTorchManager;
     private KeyguardManager mKeyguardManager;
     private EventHandler mEventHandler;
     private SensorManager mSensorManager;
@@ -69,6 +71,7 @@ public class KeyHandler implements DeviceKeyHandler {
     public KeyHandler(Context context) {
         mContext = context;
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        mTorchManager = (TorchManager) mContext.getSystemService(Context.TORCH_SERVICE);
         mEventHandler = new EventHandler();
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -122,9 +125,7 @@ public class KeyHandler implements DeviceKeyHandler {
                 break;
             case GESTURE_V_SCANCODE:
                 mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
-                Intent torchIntent = new Intent(Intent.ACTION_TOGGLE_FLASHLIGHT);
-                torchIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-                mContext.sendBroadcastAsUser(torchIntent, UserHandle.CURRENT);
+                mTorchManager.setTorchEnabled(mTorchManager.isTorchOn());
                 doHapticFeedback();
                 break;
             case GESTURE_LTR_SCANCODE:
