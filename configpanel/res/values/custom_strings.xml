@@ -18,4 +18,7 @@
     <string name="touchscreen_extras">Extras</string>
     <string name="haptic_feedback">Haptic feedback</string>
     <string name="haptic_feedback_summary">Vibrate when a gesture got detected</string>
+
+    <string name="touchscreen_dialer_gesture_title">Dialer</string>
+    <string name="touchscreen_dialer_gesture_summary">Draw an upside down \'V\' to open the dialer</string>
 </resources>

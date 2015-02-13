@@ -1,6 +1,5 @@
 package com.cyanogenmod.settings.device;
 
-import android.app.ActivityManagerNative;
 import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -16,7 +15,6 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
-import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.os.UserHandle;
@@ -37,7 +35,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final String PROP_HAPTIC_FEEDBACK = "persist.gestures.haptic";
 
     // Supported scancodes
-    private static final int FLIP_CAMERA_SCANCODE = 249;
+    private static final int GESTURE_V_UP_SCANCODE = 249;
     private static final int GESTURE_CIRCLE_SCANCODE = 250;
     private static final int GESTURE_SWIPE_DOWN_SCANCODE = 251;
     private static final int GESTURE_V_SCANCODE = 252;
@@ -48,7 +46,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_WAKELOCK_DURATION = 3000;
 
     private static final int[] sSupportedGestures = new int[]{
-        FLIP_CAMERA_SCANCODE,
+        GESTURE_V_UP_SCANCODE,
         GESTURE_CIRCLE_SCANCODE,
         GESTURE_SWIPE_DOWN_SCANCODE,
         GESTURE_V_SCANCODE,
@@ -101,13 +99,23 @@ public class KeyHandler implements DeviceKeyHandler {
         public void handleMessage(Message msg) {
             KeyEvent event = (KeyEvent) msg.obj;
             switch(event.getScanCode()) {
-            case FLIP_CAMERA_SCANCODE:
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    break;
-                }
-            case GESTURE_CIRCLE_SCANCODE:
+            case GESTURE_V_UP_SCANCODE: {
                 ensureKeyguardManager();
-                String action = null;
+                mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
+                try {
+                    WindowManagerGlobal.getWindowManagerService().dismissKeyguard();
+                } catch (RemoteException e) {
+                    // Ignore
+                }
+                mPowerManager.wakeUp(SystemClock.uptimeMillis());
+                Intent intent = new Intent(Intent.ACTION_DIAL, null);
+                startActivitySafely(intent);
+                doHapticFeedback();
+                break;
+            }
+            case GESTURE_CIRCLE_SCANCODE: {
+                ensureKeyguardManager();
+                String action;
                 mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
                 if (mKeyguardManager.isKeyguardSecure() && mKeyguardManager.isKeyguardLocked()) {
                     action = MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE;
@@ -124,30 +132,35 @@ public class KeyHandler implements DeviceKeyHandler {
                 startActivitySafely(intent);
                 doHapticFeedback();
                 break;
-            case GESTURE_SWIPE_DOWN_SCANCODE:
+            }
+            case GESTURE_SWIPE_DOWN_SCANCODE: {
                 dispatchMediaKeyWithWakeLockToMediaSession(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
                 doHapticFeedback();
                 break;
-            case GESTURE_V_SCANCODE:
+            }
+            case GESTURE_V_SCANCODE: {
                 mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
                 ensureTorchManager();
                 mTorchManager.setTorchEnabled(!mTorchManager.isTorchOn());
                 doHapticFeedback();
                 break;
-            case GESTURE_LTR_SCANCODE:
+            }
+            case GESTURE_LTR_SCANCODE: {
                 dispatchMediaKeyWithWakeLockToMediaSession(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
                 doHapticFeedback();
                 break;
-            case GESTURE_GTR_SCANCODE:
+            }
+            case GESTURE_GTR_SCANCODE: {
                 dispatchMediaKeyWithWakeLockToMediaSession(KeyEvent.KEYCODE_MEDIA_NEXT);
                 doHapticFeedback();
                 break;
+            }
             }
         }
     }
 
     public boolean handleKeyEvent(KeyEvent event) {
-        if (event.getAction() != KeyEvent.ACTION_UP && event.getScanCode() != FLIP_CAMERA_SCANCODE) {
+        if (event.getAction() != KeyEvent.ACTION_UP && event.getScanCode() != GESTURE_V_UP_SCANCODE) {
             return false;
         }
         boolean isKeySupported = ArrayUtils.contains(sSupportedGestures, event.getScanCode());
