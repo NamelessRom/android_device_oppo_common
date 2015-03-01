@@ -1,10 +1,13 @@
 package com.cyanogenmod.settings.device;
 
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
 import android.os.Build;
@@ -13,6 +16,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
+import android.preference.PreferenceManager;
 import android.service.gesture.IGestureService;
 import android.view.InputDevice;
 import android.view.InputEvent;
@@ -59,10 +63,15 @@ public class Startup extends BroadcastReceiver {
             }
 
             // Disable O-Click settings if needed
-            if (!"OPPO".equals(Build.BRAND)) {
+            if (!hasOClick()) {
                 disableComponent(context, BluetoothInputSettings.class.getName());
                 disableComponent(context, OclickService.class.getName());
-                disableComponent(context, BluetoothReceiver.class.getName());
+            } else {
+                updateOClickServiceState(context);
+            }
+        } else if (intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+            if (hasOClick()) {
+                updateOClickServiceState(context);
             }
         } else if (intent.getAction().equals("cyanogenmod.intent.action.GESTURE_CAMERA")) {
             long now = SystemClock.uptimeMillis();
@@ -124,5 +133,26 @@ public class Startup extends BroadcastReceiver {
         pm.setComponentEnabledSetting(name,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
+    }
+
+    private static boolean hasOClick() {
+        return "OPPO".equals(Build.BRAND);
+    }
+
+    private void updateOClickServiceState(Context context) {
+        BluetoothManager btManager = (BluetoothManager)
+                context.getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter adapter = btManager.getAdapter();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean shouldStartService = adapter != null
+                && adapter.getState() == BluetoothAdapter.STATE_ON
+                && prefs.contains(Constants.OCLICK_DEVICE_ADDRESS_KEY);
+        Intent serviceIntent = new Intent(context, OclickService.class);
+
+        if (shouldStartService) {
+            context.startService(serviceIntent);
+        } else {
+            context.stopService(serviceIntent);
+        }
     }
 }
