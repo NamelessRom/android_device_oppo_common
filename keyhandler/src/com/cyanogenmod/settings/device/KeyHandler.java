@@ -34,6 +34,9 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private static final String PROP_HAPTIC_FEEDBACK = "persist.gestures.haptic";
 
+    private static final String ACTION_DISMISS_KEYGUARD =
+            "com.android.keyguard.action.DISMISS_KEYGUARD_SECURELY";
+
     // Supported scancodes
     private static final int GESTURE_V_UP_SCANCODE = 249;
     private static final int GESTURE_CIRCLE_SCANCODE = 250;
@@ -120,11 +123,8 @@ public class KeyHandler implements DeviceKeyHandler {
                 if (mKeyguardManager.isKeyguardSecure() && mKeyguardManager.isKeyguardLocked()) {
                     action = MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE;
                 } else {
-                    try {
-                        WindowManagerGlobal.getWindowManagerService().dismissKeyguard();
-                    } catch (RemoteException e) {
-                        // Ignore
-                    }
+                    mContext.sendBroadcastAsUser(new Intent(ACTION_DISMISS_KEYGUARD),
+                            UserHandle.CURRENT);
                     action = MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA;
                 }
                 mPowerManager.wakeUp(SystemClock.uptimeMillis());
