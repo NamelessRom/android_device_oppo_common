@@ -38,6 +38,8 @@ public class KeyHandler implements DeviceKeyHandler {
             "com.android.keyguard.action.DISMISS_KEYGUARD_SECURELY";
 
     // Supported scancodes
+    private static final int KEY_VOLUMEDOWN = 114;
+    private static final int KEY_VOLUMEUP = 115;
     private static final int GESTURE_V_UP_SCANCODE = 249;
     private static final int GESTURE_CIRCLE_SCANCODE = 250;
     private static final int GESTURE_SWIPE_DOWN_SCANCODE = 251;
@@ -45,6 +47,7 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_LTR_SCANCODE = 253;
     private static final int GESTURE_GTR_SCANCODE = 254;
     private static final int KEY_DOUBLE_TAP = 255;
+    // private static final int KEY_SWEEP_WAKE = 255;
 
     private static final int GESTURE_WAKELOCK_DURATION = 3000;
 
@@ -152,6 +155,16 @@ public class KeyHandler implements DeviceKeyHandler {
             }
             case GESTURE_GTR_SCANCODE: {
                 dispatchMediaKeyWithWakeLockToMediaSession(KeyEvent.KEYCODE_MEDIA_NEXT);
+                doHapticFeedback();
+                break;
+            }
+            case KEY_VOLUMEDOWN: {
+                dispatchMediaKeyWithWakeLockToMediaSession(KeyEvent.KEYCODE_VOLUME_DOWN);
+                doHapticFeedback();
+                break;
+            }
+            case KEY_VOLUMEUP: {
+                dispatchMediaKeyWithWakeLockToMediaSession(KeyEvent.KEYCODE_VOLUME_UP);
                 doHapticFeedback();
                 break;
             }
