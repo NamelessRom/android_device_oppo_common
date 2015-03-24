@@ -105,11 +105,8 @@ public class KeyHandler implements DeviceKeyHandler {
             case GESTURE_V_UP_SCANCODE: {
                 ensureKeyguardManager();
                 mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
-                try {
-                    WindowManagerGlobal.getWindowManagerService().dismissKeyguard();
-                } catch (RemoteException e) {
-                    // Ignore
-                }
+                mContext.sendBroadcastAsUser(new Intent(ACTION_DISMISS_KEYGUARD),
+                        UserHandle.CURRENT);
                 mPowerManager.wakeUp(SystemClock.uptimeMillis());
                 Intent intent = new Intent(Intent.ACTION_DIAL, null);
                 startActivitySafely(intent);
