@@ -8,6 +8,7 @@ import android.preference.SwitchPreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+@SuppressWarnings("deprecation")
 public class NodePreferenceActivity extends PreferenceActivity
         implements OnPreferenceChangeListener {
 
@@ -37,20 +38,21 @@ public class NodePreferenceActivity extends PreferenceActivity
         for (String pref : Constants.sNodePreferenceMap.keySet()) {
             SwitchPreference b = (SwitchPreference) findPreference(pref);
             if (b == null) continue;
-            b.setOnPreferenceChangeListener(this);
+
             String node = Constants.sNodePreferenceMap.get(pref);
             String curNodeValue = FileUtils.readOneLine(node);
-            b.setChecked(curNodeValue.equals("1"));
+            b.setChecked("1".equals(curNodeValue));
+            b.setOnPreferenceChangeListener(this);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        // Respond to the action bar's Up/Home button
-        case android.R.id.home:
-            finish();
-            return true;
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

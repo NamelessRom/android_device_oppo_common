@@ -16,6 +16,7 @@
 
 package com.cyanogenmod.settings.device.utils;
 
+import android.annotation.Nullable;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -33,7 +34,7 @@ public final class FileUtils {
     /**
      * Reads the first line of text from the given file
      */
-    public static String readOneLine(String fileName) {
+    @Nullable public static String readOneLine(String fileName) {
         String line = null;
         BufferedReader reader = null;
 
