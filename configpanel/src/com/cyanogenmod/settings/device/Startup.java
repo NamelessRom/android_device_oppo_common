@@ -18,20 +18,39 @@ import android.os.SystemClock;
 import android.os.UserHandle;
 import android.preference.PreferenceManager;
 import android.service.gesture.IGestureService;
+import android.text.TextUtils;
 import android.view.InputDevice;
 import android.view.InputEvent;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 
-import java.io.File;
-
 import com.cyanogenmod.settings.device.utils.Constants;
 import com.cyanogenmod.settings.device.utils.FileUtils;
 
+import java.io.File;
+
 public class Startup extends BroadcastReceiver {
+    private static final String ACTION_CONTROL = "org.namelessrom.device.extra.ACTION_CONTROL";
+    private static final String ACTION_GESTURE_CAMERA = "cyanogenmod.intent.action.GESTURE_CAMERA";
+
+    private static final String EXTRA_CONTROL = "control";
+    private static final String EXTRA_VALUE = "value";
+
+    private static final String BRAND = "OPPO";
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if (intent == null) {
+            // get out of here
+            return;
+        }
+
+        final String action = intent.getAction();
+        if (ACTION_CONTROL.equals(action)) {
+            String control = intent.getStringExtra(EXTRA_CONTROL);
+            String value = intent.getStringExtra(EXTRA_VALUE);
+            toggleGesture(context, control, value);
+        } else if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             // Disable touchscreen gesture settings if needed
             if (!hasTouchscreenGestures()) {
                 disableComponent(context, TouchscreenGestureSettings.class.getName());
@@ -48,7 +67,7 @@ public class Startup extends BroadcastReceiver {
 
             // Disable backtouch settings if needed
             if (!context.getResources().getBoolean(
-                        com.android.internal.R.bool.config_enableGestureService)) {
+                    com.android.internal.R.bool.config_enableGestureService)) {
                 disableComponent(context, GesturePadSettings.class.getName());
             } else {
                 IBinder b = ServiceManager.getService("gesture");
@@ -70,17 +89,29 @@ public class Startup extends BroadcastReceiver {
             } else {
                 updateOClickServiceState(context);
             }
-        } else if (intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+        } else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
             if (hasOClick()) {
                 updateOClickServiceState(context);
             }
-        } else if (intent.getAction().equals("cyanogenmod.intent.action.GESTURE_CAMERA")) {
+        } else if (ACTION_GESTURE_CAMERA.equals(action)) {
             long now = SystemClock.uptimeMillis();
-            sendInputEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_CAMERA, 0, 0,
-                    KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0, InputDevice.SOURCE_KEYBOARD));
-            sendInputEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP,KeyEvent.KEYCODE_CAMERA,
+            sendInputEvent(new KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CAMERA,
                     0, 0, KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0, InputDevice.SOURCE_KEYBOARD));
+            sendInputEvent(new KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_CAMERA,
+                    0, 0, KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0, InputDevice.SOURCE_KEYBOARD));
+        }
+    }
+
+    public static void toggleGesture(Context context, String key, String value) {
+        String node = Constants.sNodePreferenceMap.get(key);
+        if (!TextUtils.isEmpty(node)) {
+            FileUtils.writeLine(node, value);
+
+            final boolean isEnabled = "1".equals(value);
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putBoolean(key, isEnabled)
+                    .apply();
         }
     }
 
@@ -124,8 +155,8 @@ public class Startup extends BroadcastReceiver {
 
     private boolean hasTouchscreenGestures() {
         return new File(Constants.TOUCHSCREEN_CAMERA_NODE).exists() &&
-            new File(Constants.TOUCHSCREEN_MUSIC_NODE).exists() &&
-            new File(Constants.TOUCHSCREEN_FLASHLIGHT_NODE).exists();
+                new File(Constants.TOUCHSCREEN_MUSIC_NODE).exists() &&
+                new File(Constants.TOUCHSCREEN_FLASHLIGHT_NODE).exists();
     }
 
     private void disableComponent(Context context, String component) {
@@ -148,7 +179,7 @@ public class Startup extends BroadcastReceiver {
     }
 
     private static boolean hasOClick() {
-        return "OPPO".equals(Build.BRAND);
+        return BRAND.equals(Build.BRAND);
     }
 
     private void updateOClickServiceState(Context context) {
