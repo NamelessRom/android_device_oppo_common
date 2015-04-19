@@ -25,5 +25,9 @@ TARGET_INIT_VENDOR_LIB := libinit_msm_oppo
 # QCOM Power
 TARGET_POWERHAL_VARIANT := qcom
 
+# Setupwizard
+BOARD_SETUP_WIZARD_CLASS_COMMON := device/oppo/common/setupwizard/src
+BOARD_SETUP_WIZARD_RESOURCES    := device/oppo/common/setupwizard/res
+
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := device/oppo/common
