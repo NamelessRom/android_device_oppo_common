@@ -68,11 +68,14 @@
                 android:resource="@string/backpad_panel_summary"/>
         </activity>
 
-        <receiver android:name=".Startup" >
+        <receiver
+            android:name=".Startup"
+            android:permission="org.namelessrom.device.extra.CONTROL">
           <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
                 <action android:name="cyanogenmod.intent.action.GESTURE_CAMERA" />
+                <action android:name="org.namelessrom.device.extra.ACTION_CONTROL" />
           </intent-filter>
         </receiver>
     </application>
