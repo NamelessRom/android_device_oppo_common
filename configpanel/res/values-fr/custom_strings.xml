@@ -16,5 +16,8 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="touchscreen_extras">Extras</string>
+  <string name="haptic_feedback">Retour haptique</string>
+  <string name="haptic_feedback_summary">Vibrer lorsqu\'un geste est détecté</string>
+  <string name="touchscreen_dialer_gesture_title">Composeur</string>
+  <string name="touchscreen_dialer_gesture_summary">Dessinez un « V » à l\'envers pour ouvrir le composeur</string>
 </resources>

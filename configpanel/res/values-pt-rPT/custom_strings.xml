@@ -17,4 +17,8 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="touchscreen_extras">Extras</string>
+  <string name="haptic_feedback">Feedback tátil</string>
+  <string name="haptic_feedback_summary">Vibrar quando um gesto for detetado</string>
+  <string name="touchscreen_dialer_gesture_title">Teclado</string>
+  <string name="touchscreen_dialer_gesture_summary">Desenhe um \"V\" de cabeça para baixo, para abrir o marcador</string>
 </resources>

@@ -17,4 +17,8 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="touchscreen_extras">Extra\'s</string>
+  <string name="haptic_feedback">Haptische feedback</string>
+  <string name="haptic_feedback_summary">Trillen wanneer een gebaar is gedetecteerd</string>
+  <string name="touchscreen_dialer_gesture_title">Telefoon</string>
+  <string name="touchscreen_dialer_gesture_summary">Teken een ondersteboven \'V\' om de kiezer te openen</string>
 </resources>
