@@ -21,3 +21,5 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_PACKAGES += \
     ConfigPanel \
     org.namelessrom.keyhandler \
+
+PRODUCT_SYSTEM_SERVER_JARS += org.namelessrom.keyhandler
