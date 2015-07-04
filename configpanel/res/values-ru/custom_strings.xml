@@ -16,9 +16,9 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="touchscreen_extras">Додаци</string>
-  <string name="haptic_feedback">Повратне информације</string>
-  <string name="haptic_feedback_summary">Вибрирај када се додир препозна</string>
-  <string name="touchscreen_dialer_gesture_title">Бројчаник</string>
-  <string name="touchscreen_dialer_gesture_summary">Нацртајте наопако \'V\' да отворите бројчаник</string>
+  <string name="touchscreen_extras">Дополнительно</string>
+  <string name="haptic_feedback">Виброотклик</string>
+  <string name="haptic_feedback_summary">Вибрировать при обнаружении жеста</string>
+  <string name="touchscreen_dialer_gesture_title">Номеронабиратель</string>
+  <string name="touchscreen_dialer_gesture_summary">Нарисуйте перевернутую «V», чтобы открыть номеронабиратель</string>
 </resources>
