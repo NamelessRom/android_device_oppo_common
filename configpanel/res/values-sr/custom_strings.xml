@@ -20,4 +20,5 @@
   <string name="haptic_feedback">Повратне информације</string>
   <string name="haptic_feedback_summary">Вибрирај када се додир препозна</string>
   <string name="touchscreen_dialer_gesture_title">Бројчаник</string>
+  <string name="touchscreen_dialer_gesture_summary">Нацртајте наопако \'V\' да отворите бројчаник</string>
 </resources>
