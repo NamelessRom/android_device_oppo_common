@@ -22,7 +22,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.CmHardwareManager;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.view.View;
@@ -36,7 +35,7 @@ import com.cyanogenmod.setupwizard.ui.SetupPageFragment;
 import org.namelessrom.setupwizard.R;
 import org.namelessrom.setupwizard.SetupWizardApp;
 
-import static android.hardware.CmHardwareManager.FEATURE_TAP_TO_WAKE;
+import cyanogenmod.hardware.CMHardwareManager;
 
 public class OppoGestureSpecificPage extends SetupPage {
     public static final String TAG = "OppoGestureSpecificPage";
@@ -77,7 +76,7 @@ public class OppoGestureSpecificPage extends SetupPage {
         private static final String EXTRA_CONTROL = "control";
         private static final String EXTRA_VALUE = "value";
 
-        private CmHardwareManager mCmHardwareManager;
+        private CMHardwareManager mCmHardwareManager;
 
         private CheckBox mDoubleTap;
         private CheckBox mCamera;
@@ -87,13 +86,12 @@ public class OppoGestureSpecificPage extends SetupPage {
 
         @Override
         protected void initializePage() {
-            mCmHardwareManager =
-                    (CmHardwareManager) getActivity().getSystemService(Context.CMHW_SERVICE);
+            mCmHardwareManager = CMHardwareManager.getInstance(getActivity());
 
             View doubleTapView = mRootView.findViewById(R.id.oppo_gesture_dt2w);
             mDoubleTap = (CheckBox) mRootView.findViewById(R.id.oppo_gesture_dt2w_checkbox);
-            if (mCmHardwareManager.isSupported(FEATURE_TAP_TO_WAKE)) {
-                mDoubleTap.setChecked(mCmHardwareManager.get(FEATURE_TAP_TO_WAKE));
+            if (mCmHardwareManager.isSupported(CMHardwareManager.FEATURE_TAP_TO_WAKE)) {
+                mDoubleTap.setChecked(mCmHardwareManager.get(CMHardwareManager.FEATURE_TAP_TO_WAKE));
                 doubleTapView.setOnClickListener(mDoubleTapClickListener);
             } else {
                 doubleTapView.setEnabled(false);
@@ -135,7 +133,7 @@ public class OppoGestureSpecificPage extends SetupPage {
                 boolean checked = !mDoubleTap.isChecked();
                 mDoubleTap.setChecked(checked);
 
-                mCmHardwareManager.set(FEATURE_TAP_TO_WAKE, checked);
+                mCmHardwareManager.set(CMHardwareManager.FEATURE_TAP_TO_WAKE, checked);
             }
         };
 
