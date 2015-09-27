@@ -1,6 +1,7 @@
 package com.cyanogenmod.settings.device;
 
 import android.app.KeyguardManager;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +49,9 @@ public class KeyHandler implements DeviceKeyHandler {
     private static final int GESTURE_V_SCANCODE = 252;
     private static final int GESTURE_LTR_SCANCODE = 253;
     private static final int GESTURE_GTR_SCANCODE = 254;
+    private static final int MODE_MUTE = 600;
+    private static final int MODE_DO_NOT_DISTURB = 601;
+    private static final int MODE_NORMAL = 602;
 
     private static final int GESTURE_WAKELOCK_DURATION = 3000;
 
@@ -57,11 +61,15 @@ public class KeyHandler implements DeviceKeyHandler {
         GESTURE_SWIPE_DOWN_SCANCODE,
         GESTURE_V_SCANCODE,
         GESTURE_LTR_SCANCODE,
-        GESTURE_GTR_SCANCODE
+        GESTURE_GTR_SCANCODE,
+        MODE_MUTE,
+        MODE_DO_NOT_DISTURB,
+        MODE_NORMAL
     };
 
     private final Context mContext;
     private final PowerManager mPowerManager;
+    private final NotificationManager mNotificationManager;
     private CameraManager mCameraManager;
     private String mRearCameraId;
     private boolean mTorchEnabled;
@@ -77,6 +85,8 @@ public class KeyHandler implements DeviceKeyHandler {
 
     public KeyHandler(Context context) {
         mContext = context;
+        mNotificationManager
+                = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mEventHandler = new EventHandler();
         mGestureWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
@@ -194,6 +204,17 @@ public class KeyHandler implements DeviceKeyHandler {
                 doHapticFeedback();
                 break;
             }
+            case MODE_MUTE:
+                mNotificationManager.setZenMode(
+                        Settings.Global.ZEN_MODE_NO_INTERRUPTIONS, null, TAG);
+                break;
+            case MODE_DO_NOT_DISTURB:
+                mNotificationManager.setZenMode(
+                        Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS, null, TAG);
+                break;
+            case MODE_NORMAL:
+                mNotificationManager.setZenMode(Settings.Global.ZEN_MODE_OFF, null, TAG);
+                break;
             }
         }
     }
