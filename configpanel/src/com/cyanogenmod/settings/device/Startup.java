@@ -50,7 +50,7 @@ public class Startup extends BroadcastReceiver {
             String control = intent.getStringExtra(EXTRA_CONTROL);
             String value = intent.getStringExtra(EXTRA_VALUE);
             toggleGesture(context, control, value);
-        } else if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
+        } else if (Intent.ACTION_PRE_BOOT_COMPLETED.equals(action)) {
             // Disable touchscreen gesture settings if needed
             if (!hasTouchscreenGestures()) {
                 disableComponent(context, TouchscreenGestureSettings.class.getName());
