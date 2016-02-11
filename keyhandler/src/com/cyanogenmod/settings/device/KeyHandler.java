@@ -33,6 +33,8 @@ import com.android.internal.util.ArrayUtils;
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = KeyHandler.class.getSimpleName();
+    private static final boolean DEBUG = false;
+
     private static final int GESTURE_REQUEST = 1;
 
     private static final String KEY_GESTURE_HAPTIC_FEEDBACK =
@@ -153,6 +155,9 @@ public class KeyHandler implements DeviceKeyHandler {
     private class EventHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            if (DEBUG) {
+                Log.d(TAG, String.format("Got message: %s", msg.arg1));
+            }
             switch(msg.arg1) {
             case GESTURE_V_UP_SCANCODE: {
                 ensureKeyguardManager();
