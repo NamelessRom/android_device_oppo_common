@@ -33,7 +33,7 @@ import com.android.internal.util.ArrayUtils;
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = KeyHandler.class.getSimpleName();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private static final int GESTURE_REQUEST = 1;
 
