@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015-2016 The CyanogenMod Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.cyanogenmod.settings.device;
 
 import android.Manifest;
@@ -22,20 +38,18 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
+
 import com.android.internal.os.DeviceKeyHandler;
 import com.android.internal.util.ArrayUtils;
+
 import cyanogenmod.providers.CMSettings;
 
 public class KeyHandler implements DeviceKeyHandler {
 
     private static final String TAG = KeyHandler.class.getSimpleName();
     private static final int GESTURE_REQUEST = 1;
-
-    private static final String KEY_GESTURE_HAPTIC_FEEDBACK =
-            "touchscreen_gesture_haptic_feedback";
 
     private static final String ACTION_DISMISS_KEYGUARD =
             "com.android.keyguard.action.DISMISS_KEYGUARD_SECURELY";
@@ -163,6 +177,7 @@ public class KeyHandler implements DeviceKeyHandler {
 
                 Intent intent = new Intent(cyanogenmod.content.Intent.ACTION_SCREEN_CAMERA_GESTURE);
                 mContext.sendBroadcast(intent, Manifest.permission.STATUS_BAR_SERVICE);
+                doHapticFeedback();
                 break;
             }
             case GESTURE_SWIPE_DOWN_SCANCODE: {
@@ -284,8 +299,8 @@ public class KeyHandler implements DeviceKeyHandler {
         if (mVibrator == null) {
             return;
         }
-        boolean enabled = Settings.System.getInt(mContext.getContentResolver(),
-                KEY_GESTURE_HAPTIC_FEEDBACK, 1) != 0;
+        boolean enabled = CMSettings.System.getInt(mContext.getContentResolver(),
+                CMSettings.System.TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK, 1) != 0;
         if (enabled) {
             mVibrator.vibrate(50);
         }
