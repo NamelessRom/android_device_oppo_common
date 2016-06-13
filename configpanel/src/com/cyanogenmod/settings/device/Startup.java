@@ -26,7 +26,8 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 
 import com.cyanogenmod.settings.device.utils.Constants;
-import com.cyanogenmod.settings.device.utils.FileUtils;
+
+import org.cyanogenmod.internal.util.FileUtils;
 
 import java.io.File;
 
